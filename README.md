@@ -1,1 +1,1 @@
-"# league-helper" 
+# league-helper
