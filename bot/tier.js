@@ -29,14 +29,21 @@ tier.getIdTier = async function(nick){
     };
 };
 
-tier.getNameString = async function(nick){
-  return `${nick} tier`;
-};
+tier.getTitleString = async function(queue){
+  if(queue === 'RANKED_SOLO_5x5'){
+    return 'SOLO/DUO TIER';
+  } else if(queue === 'RANKED_FLEX_SR'){
+    return 'SR FLEX TIER';
+  } else if(queue === 'RANKED_FLEX_TT'){
+    return 'TT FLEX TIER';
+  }
+}
 
-tier.getValueString = async function(playerTierResults){
+
+tier.getValueString = async function(playerTierResults, queue){
   let string = '';
   playerTierResults.forEach((tiers, index) => {
-    if(tiers.queueType === 'RANKED_SOLO_5x5'){
+    if(tiers.queueType === queue){
       if(tiers.tier === 'MASTER' || tiers.tier === 'CHALLENGER'){
         let model = `${tiers.tier}`;
         string = model;
@@ -52,10 +59,10 @@ tier.getValueString = async function(playerTierResults){
   return string;
 };
 
-tier.getImgString = async function(playerTierResults){
+tier.getImgString = async function(playerTierResults, queue){
   let imgString = '';
   playerTierResults.forEach((tiers, index) => {
-    if(tiers.queueType === 'RANKED_SOLO_5x5'){
+    if(tiers.queueType === queue){
       if(tiers.tier === 'MASTER' || tiers.tier === 'CHALLENGER'){
         let model = `http://res.cloudinary.com/dtidk81ya/image/upload/v1494882728/${tiers.tier}.png`;
         imgString = model;
@@ -76,9 +83,9 @@ tier.getIconImgString = async function(iconId){
   return `http://ddragon.leagueoflegends.com/cdn/7.9.1/img/profileicon/${iconId}.png`;
 }
 
-tier.getEmbed = async function(nameString, valueString, imgString, playerIconImgString){
+tier.getEmbed = async function(titleString, nameString, valueString, imgString, playerIconImgString){
   let embed = {
-            "title": "TIER HELPER",
+            "title": titleString,
             "color": 7077888,
             "author": {
                 "name": "League Helper",

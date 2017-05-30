@@ -23,17 +23,55 @@ client.on('message', msg => {
 
 
       const playerData = await tier.getIdTier(msgString);
-      const nameString = await tier.getNameString(msgString);
-      const valueString = await tier.getValueString(playerData.tier);
-      const imgString = await tier.getImgString(playerData.tier);
+      const titleString = await tier.getTitleString('RANKED_SOLO_5x5');
+      const nameString = msgString;
+      const valueString = await tier.getValueString(playerData.tier, 'RANKED_SOLO_5x5');
+      const imgString = await tier.getImgString(playerData.tier, 'RANKED_SOLO_5x5');
       const playerIconImgString = await tier.getIconImgString(playerData.id.profileIconId);
-      const embed = await tier.getEmbed(nameString, valueString, imgString, playerIconImgString);
+      const embed = await tier.getEmbed(titleString, nameString, valueString, imgString, playerIconImgString);
+
+      console.log(playerData)
 
       msg.channel.send({ embed });
 
 
     }())
+  }
 
+  if(msgArray[0].toLowerCase() === '!tierflex'){
+    (async function(){
+      //Remove the command on the message
+      msgArray.splice(0, 1);
+      let msgString = msgArray.join(' ');
+      const playerData = await tier.getIdTier(msgString);
+      const titleString = await tier.getTitleString('RANKED_FLEX_SR');
+      const nameString = msgString;
+      const valueString = await tier.getValueString(playerData.tier, 'RANKED_FLEX_SR');
+      const imgString = await tier.getImgString(playerData.tier, 'RANKED_FLEX_SR');
+      const playerIconImgString = await tier.getIconImgString(playerData.id.profileIconId);
+      const embed = await tier.getEmbed(titleString, nameString, valueString, imgString, playerIconImgString);
+
+      msg.channel.send({ embed });
+
+    }())
+  }
+
+  if(msgArray[0].toLowerCase() === '!tiertt'){
+    (async function(){
+      //Remove the command on the message
+      msgArray.splice(0, 1);
+      let msgString = msgArray.join(' ');
+      const playerData = await tier.getIdTier(msgString);
+      const titleString = await tier.getTitleString('RANKED_FLEX_TT');
+      const nameString = msgString;
+      const valueString = await tier.getValueString(playerData.tier, 'RANKED_FLEX_TT');
+      const imgString = await tier.getImgString(playerData.tier, 'RANKED_FLEX_TT');
+      const playerIconImgString = await tier.getIconImgString(playerData.id.profileIconId);
+      const embed = await tier.getEmbed(titleString, nameString, valueString, imgString, playerIconImgString);
+
+      msg.channel.send({ embed });
+
+    }())
   }
 });
 
