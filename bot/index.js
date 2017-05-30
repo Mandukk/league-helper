@@ -18,50 +18,77 @@ client.on('message', msg => {
   if(msgArray[0].toLowerCase() === '!tier'){
     (async function(){
       msgArray.splice(0, 1);
+      let server = msgArray[0];
+      msgArray.splice(0,1);
       let msgString = msgArray.join(' ');
+      if(msgString === ''){
+        msgString = server;
+        server = 'na1';
+      }
 
-
-      const playerData = await tier.getIdTier(msgString);
-      if(playerData.idResponseStatus === 200){
-        const titleString = await tier.getTitleString('RANKED_SOLO_5x5');
-        const nameString = msgString;
-        const valueString = await tier.getValueString(playerData.tier, 'RANKED_SOLO_5x5');
-        const imgString = await tier.getImgString(playerData.tier, 'RANKED_SOLO_5x5');
-        const playerIconImgString = await tier.getIconImgString(playerData.id.profileIconId);
-        const embed = await tier.getEmbed(titleString, nameString, valueString, imgString, playerIconImgString);
-
-        msg.channel.send({ embed });
+      const playerData = await tier.getIdTier(msgString, server);
+      if(typeof playerData === 'string'){
+        msg.reply(playerData)
       } else {
-        msg.reply(`This player doesn't exist.`);
+        if(playerData.idResponseStatus === 200){
+          const titleString = await tier.getTitleString('RANKED_SOLO_5x5');
+          const nameString = msgString;
+          const valueString = await tier.getValueString(playerData.tier, 'RANKED_SOLO_5x5');
+          const imgString = await tier.getImgString(playerData.tier, 'RANKED_SOLO_5x5');
+          const playerIconImgString = await tier.getIconImgString(playerData.id.profileIconId);
+          const embed = await tier.getEmbed(titleString, nameString, valueString, imgString, playerIconImgString);
+
+          msg.channel.send({ embed });
+        } else {
+          msg.reply(`This player doesn't exist.`);
+        }
       }
     }())
-  }
-
-  if(msgArray[0].toLowerCase() === '!tierflex'){
+    //Handle the !tierflex command
+  } else if(msgArray[0].toLowerCase() === '!tierflex'){
     (async function(){
       msgArray.splice(0, 1);
+      let server = msgArray[0];
+      msgArray.splice(0,1);
       let msgString = msgArray.join(' ');
-      const playerData = await tier.getIdTier(msgString);
-      if(playerData.idResponseStatus === 200){
-        const titleString = await tier.getTitleString('RANKED_FLEX_SR');
-        const nameString = msgString;
-        const valueString = await tier.getValueString(playerData.tier, 'RANKED_FLEX_SR');
-        const imgString = await tier.getImgString(playerData.tier, 'RANKED_FLEX_SR');
-        const playerIconImgString = await tier.getIconImgString(playerData.id.profileIconId);
-        const embed = await tier.getEmbed(titleString, nameString, valueString, imgString, playerIconImgString);
-
-        msg.channel.send({ embed });
+      if(msgString === ''){
+        msgString = server;
+        server = 'na1';
+      }
+      const playerData = await tier.getIdTier(msgString, server);
+      if(typeof playerData === 'string'){
+        msg.reply(playerData)
       } else {
-        msg.reply(`This player doesn't exist.`);
+        if(playerData.idResponseStatus === 200){
+          const titleString = await tier.getTitleString('RANKED_FLEX_SR');
+          const nameString = msgString;
+          const valueString = await tier.getValueString(playerData.tier, 'RANKED_FLEX_SR');
+          const imgString = await tier.getImgString(playerData.tier, 'RANKED_FLEX_SR');
+          const playerIconImgString = await tier.getIconImgString(playerData.id.profileIconId);
+          const embed = await tier.getEmbed(titleString, nameString, valueString, imgString, playerIconImgString);
+
+          msg.channel.send({ embed });
+        } else {
+          msg.reply(`This player doesn't exist.`);
+        }
       }
     }())
-  }
-
-  if(msgArray[0].toLowerCase() === '!tiertt'){
+    //Handle the !tiertt command
+  } else if(msgArray[0].toLowerCase() === '!tiertt'){
     (async function(){
       msgArray.splice(0, 1);
+      let server = msgArray[0];
+      msgArray.splice(0,1);
       let msgString = msgArray.join(' ');
-      const playerData = await tier.getIdTier(msgString);
+      if(msgString === ''){
+        msgString = server;
+        server = 'na1';
+      }
+      const playerData = await tier.getIdTier(msgString, server);
+
+      if(typeof playerData === 'string'){
+        msg.reply(playerData)
+      } else {
         if(playerData.idResponseStatus === 200){
           const titleString = await tier.getTitleString('RANKED_FLEX_TT');
           const nameString = msgString;
@@ -74,6 +101,7 @@ client.on('message', msg => {
         } else {
           msg.reply(`This player doesn't exist.`);
         }
+      }
     }())
   }
 });

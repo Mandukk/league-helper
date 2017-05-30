@@ -8,27 +8,51 @@ import options from './options';
 let tier = {};
 
 //Function to get the id of the player
-tier.getId = function(nick){
-  return fetch(`https://br1.api.riotgames.com/lol/summoner/v3/summoners/by-name/${nick}`, {headers: options.headerOptions});
+tier.getId = function(server, nick){
+  return fetch(`https://${server}.api.riotgames.com/lol/summoner/v3/summoners/by-name/${nick}`, {headers: options.headerOptions});
 };
 
 //Function to get the tier of the player
-tier.getTier = function(id) {
-  return fetch(`https://br1.api.riotgames.com/lol/league/v3/positions/by-summoner/${id}`, {headers: options.headerOptions});
+tier.getTier = function(server, id) {
+  return fetch(`https://${server}.api.riotgames.com/lol/league/v3/positions/by-summoner/${id}`, {headers: options.headerOptions});
 };
 
 //Function to get the id and the tier of the player
-tier.getIdTier = async function(nick){
-    const idResponse = await this.getId(nick);
-    const idResponseStatus = idResponse.status;
-    const id = await idResponse.json();
-    const tierResponse = await this.getTier(id.id);
-    const tier = await tierResponse.json();
-    return {
-        id,
-        tier,
-        idResponseStatus
-    };
+tier.getIdTier = async function(nick, server){
+  let newServer = server;
+  if(server.toLowerCase() === 'br'){
+    newServer = 'br1';
+  }else if(server.toLowerCase() === 'eune'){
+    newServer = 'eun1';
+  }else if(server.toLowerCase() === 'euw'){
+    newServer = 'euw1';
+  }else if(server.toLowerCase() === 'lan'){
+    newServer = 'la1';
+  }else if(server.toLowerCase() === 'las'){
+    newServer = 'la2';
+  }else if(server.toLowerCase() === 'oce'){
+    newServer = 'oc1';
+  }else if(server.toLowerCase() === 'ru'){
+    newServer = 'ru';
+  }else if(server.toLowerCase() === 'tr'){
+    newServer = 'tr1';
+  }else if(server.toLowerCase() === 'jp'){
+    newServer = 'jp1';
+  }else if(server.toLowerCase() === 'kr'){
+    newServer = 'kr';
+  }else if(server.toLowerCase() != 'na1'){
+    return `This server doesn't exist. Please check all servers at xxxxxxx.`
+  }
+  const idResponse = await this.getId(newServer, nick);
+  const idResponseStatus = idResponse.status;
+  const id = await idResponse.json();
+  const tierResponse = await this.getTier(newServer, id.id);
+  const tier = await tierResponse.json();
+  return {
+      id,
+      tier,
+      idResponseStatus
+  };
 };
 
 tier.getTitleString = async function(queue){
