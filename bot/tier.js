@@ -20,12 +20,14 @@ tier.getTier = function(id) {
 //Function to get the id and the tier of the player
 tier.getIdTier = async function(nick){
     const idResponse = await this.getId(nick);
+    const idResponseStatus = idResponse.status;
     const id = await idResponse.json();
     const tierResponse = await this.getTier(id.id);
     const tier = await tierResponse.json();
     return {
         id,
-        tier
+        tier,
+        idResponseStatus
     };
 };
 
